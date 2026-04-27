@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spout2-python"
+version = "0.1.0"
+description = "Python bindings for Spout2 GPU texture sharing (Windows only)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "Unveil Studio" }]
+keywords = ["spout", "spout2", "texture sharing", "gpu", "video", "opengl", "directx", "touchdesigner"]
+classifiers = [
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Multimedia :: Video",
+]
+
+[project.optional-dependencies]
+torch = ["numpy", "torch"]
+image = ["Pillow"]
+
+[project.urls]
+Repository = "https://github.com/UnveilStudio/spout2-python"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["spout*"]
+
+[tool.setuptools.package-data]
+spout = ["SpoutLibrary.dll"]
