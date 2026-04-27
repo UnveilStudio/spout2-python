@@ -1,9 +1,10 @@
 """
-share_image.py — Load any image and share it to TouchDesigner via Spout.
+share_image.py — Load an image and share it to TouchDesigner via Spout.
 
 Usage:
+    python examples/share_image.py                      # uses assets/unveil_logo.png (default demo)
     python examples/share_image.py path/to/image.jpg
-    python examples/share_image.py path/to/image.png   (also works with .bmp, .tiff, etc.)
+    python examples/share_image.py path/to/image.png    (also works with .bmp, .tiff, etc.)
 
 In TouchDesigner: add a "Spout In" TOP and it will receive "PythonImage".
 
@@ -15,9 +16,15 @@ import os
 import ctypes
 import time
 
-# Resolve image path from args or prompt
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_DEFAULT_IMAGE = os.path.join(os.path.dirname(_HERE), "assets", "unveil_logo.png")
+
+# Resolve image path: CLI arg → default demo asset → prompt as last resort.
 if len(sys.argv) > 1:
     image_path = sys.argv[1]
+elif os.path.exists(_DEFAULT_IMAGE):
+    image_path = _DEFAULT_IMAGE
+    print(f"No image given — using default demo asset: {image_path}")
 else:
     image_path = input("Image path: ").strip().strip('"')
 
@@ -66,7 +73,7 @@ fn_send = _vtbl_fn(h, 5, ctypes.c_bool, [
 buf = (ctypes.c_ubyte * len(pixels)).from_buffer_copy(pixels)
 
 print("\nSending to TouchDesigner as 'PythonImage'")
-print("In TouchDesigner: add a Spout In TOP → it should appear immediately.")
+print("In TouchDesigner: add a Spout In TOP -> it should appear immediately.")
 print("Press Ctrl+C to stop.\n")
 
 frame = 0

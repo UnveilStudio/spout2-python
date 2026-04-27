@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/unveil_logo.png" alt="Unveil Studio" width="160" />
+</p>
+
 # spout2-python
 
 Python bindings for [Spout2](https://spout.zeal.co/) — real-time GPU texture sharing on Windows.
@@ -50,16 +54,27 @@ with SpoutReceiver("MySender") as receiver:
 
 | File | What it shows |
 |---|---|
-| `examples/send_example.py` | Animated gradient sender |
+| `examples/send_example.py` | Animated gradient sender (NumPy vectorised, 1280×720 @60fps) |
 | `examples/receive_example.py` | Connect to any active sender |
+| `examples/preview_example.py` | cv2 window receiver — see the sender live |
+| `examples/share_image.py` | Send an image (defaults to the bundled `assets/unveil_logo.png`) |
 | `examples/tensor_send.py` | Send a PyTorch tensor `(C, H, W)` float [0,1] |
 | `examples/tensor_receive.py` | Receive frames as tensors, zero-copy |
 | `examples/inference_loop.py` | Full Spout → model → Spout round-trip (StreamDiffusion-ready) |
+| `examples/demo.bat` | Double-click to launch sender + preview together |
 
 ```bash
 python examples/send_example.py
 python examples/receive_example.py
 ```
+
+For a one-click sanity check, just double-click **`examples/demo.bat`**.
+That spawns the `share_image.py` sender (which streams `assets/unveil_logo.png`
+as a Spout source called `PythonImage`) and the cv2 preview window. To
+confirm the sender side is working independently of the cv2 receiver,
+open **TouchDesigner** with a "Spout In" TOP set to `PythonImage`, or
+**OBS** with a "Spout2 Capture" source — they will pick up the logo
+within a second.
 
 ## Tensor / inference usage
 

@@ -2,6 +2,8 @@ include LICENSE
 include THIRD_PARTY_LICENSES.md
 include README.md
 include spout/SpoutLibrary.dll
+recursive-include assets *.png *.jpg *.jpeg
+recursive-include examples *.py *.bat
 recursive-exclude Spout2-SDK *
 recursive-exclude Spout-SDK-binaries *
 exclude img.png
