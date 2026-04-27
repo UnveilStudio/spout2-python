@@ -112,9 +112,10 @@ class SpoutReceiver:
         fn = self._fn(
             _lib.V_RECEIVE_IMAGE,
             ctypes.c_bool,
-            [ctypes.c_char_p, ctypes.c_uint, ctypes.c_bool, ctypes.c_uint],
+            [ctypes.c_void_p, ctypes.c_uint, ctypes.c_bool, ctypes.c_uint],
         )
-        return bool(fn(self._h, buf, gl_format, invert, 0))
+        return bool(fn(self._h, ctypes.cast(buf, ctypes.c_void_p),
+                       gl_format, invert, 0))
 
     def release(self):
         """Disconnect from the sender and free resources."""

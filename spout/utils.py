@@ -82,6 +82,35 @@ class SpoutUtils:
         ok = fn(self._h, buf)
         return buf.value.decode() if ok else ""
 
+    def get_sender_info(self, name: str):
+        """
+        Return ``(width, height, share_handle, dxgi_format)`` for the sender
+        named *name*, or ``None`` if no such sender exists.
+
+        Works without an OpenGL context — useful to learn a sender's
+        dimensions before allocating a receive buffer when running on a pure
+        memory-share path (e.g. headless Python scripts).
+        """
+        width  = ctypes.c_uint(0)
+        height = ctypes.c_uint(0)
+        handle = ctypes.c_void_p(0)
+        fmt    = ctypes.c_ulong(0)
+        fn = self._fn(
+            _lib.V_GET_SENDER_INFO,
+            ctypes.c_bool,
+            [ctypes.c_char_p,
+             ctypes.POINTER(ctypes.c_uint),
+             ctypes.POINTER(ctypes.c_uint),
+             ctypes.POINTER(ctypes.c_void_p),
+             ctypes.POINTER(ctypes.c_ulong)],
+        )
+        ok = fn(self._h, name.encode(),
+                ctypes.byref(width), ctypes.byref(height),
+                ctypes.byref(handle), ctypes.byref(fmt))
+        if not ok:
+            return None
+        return (width.value, height.value, handle.value, fmt.value)
+
     def set_active_sender(self, name: str) -> bool:
         """Set *name* as the active sender."""
         fn = self._fn(_lib.V_SET_ACTIVE_SENDER, ctypes.c_bool, [ctypes.c_char_p])

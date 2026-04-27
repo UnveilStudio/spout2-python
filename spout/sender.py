@@ -95,10 +95,11 @@ class SpoutSender:
         fn = self._fn(
             _lib.V_SEND_IMAGE,
             ctypes.c_bool,
-            [ctypes.c_char_p, ctypes.c_uint, ctypes.c_uint,
+            [ctypes.c_void_p, ctypes.c_uint, ctypes.c_uint,
              ctypes.c_uint, ctypes.c_bool],
         )
-        return bool(fn(self._h, buf, width, height, gl_format, invert))
+        return bool(fn(self._h, ctypes.cast(buf, ctypes.c_void_p),
+                       width, height, gl_format, invert))
 
     def release(self):
         """Close the sender and free GPU resources."""

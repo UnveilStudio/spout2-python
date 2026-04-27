@@ -1,65 +1,60 @@
 """
 send_example.py — Create a Spout sender and publish synthetic RGBA frames.
 
-Run this alongside receive_example.py (or any Spout-aware application) to see
-the texture shared in real time.
-
-NOTE: SendImage() requires an active OpenGL context. If your application
-already has one (e.g. via PyOpenGL, pygame, moderngl) this will work directly.
-If not, uncomment the CreateOpenGL() block below to create a hidden window.
+Run this alongside receive_example.py / preview_example.py / TouchDesigner /
+any other Spout-aware application to see the texture shared in real time.
 """
-import sys
 import os
-import ctypes
+import sys
 import time
-import math
 
-# Make sure the project root is on the path when run directly
+import numpy as np
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from spout import SpoutSender, GL_RGBA
 
-WIDTH  = 640
-HEIGHT = 480
-FPS    = 30
+WIDTH  = 1280
+HEIGHT = 720
+FPS    = 60
 
 
-def make_frame(frame_num: int, width: int, height: int) -> bytearray:
-    """Generate a simple animated gradient frame (RGBA)."""
-    buf = bytearray(width * height * 4)
-    t = frame_num / FPS
-    for y in range(height):
-        for x in range(width):
-            r = int(128 + 127 * math.sin(2 * math.pi * (x / width + t)))
-            g = int(128 + 127 * math.sin(2 * math.pi * (y / height + t * 1.3)))
-            b = int(128 + 127 * math.cos(2 * math.pi * (x / width - t * 0.7)))
-            i = (y * width + x) * 4
-            buf[i]     = r
-            buf[i + 1] = g
-            buf[i + 2] = b
-            buf[i + 3] = 255  # fully opaque
-    return buf
-
-
-def main():
+def main() -> None:
     print(f"Creating Spout sender 'PythonSender' at {WIDTH}x{HEIGHT} @ {FPS} fps")
     print("Press Ctrl+C to stop.\n")
+
+    # Vectorised gradient bases — computed once, reused every frame.
+    xs = np.arange(WIDTH,  dtype=np.uint16)
+    ys = np.arange(HEIGHT, dtype=np.uint16)[:, None]
+
+    rgba = np.empty((HEIGHT, WIDTH, 4), dtype=np.uint8)
+    rgba[..., 3] = 255                              # alpha opaque
 
     with SpoutSender("PythonSender") as sender:
         frame = 0
         interval = 1.0 / FPS
+        t_start = time.perf_counter()
 
         while True:
             t0 = time.perf_counter()
+            t = frame / FPS
 
-            pixels = make_frame(frame, WIDTH, HEIGHT)
-            ok = sender.send_image(pixels, WIDTH, HEIGHT, GL_RGBA)
+            r_off = int((np.sin(t)         * 0.5 + 0.5) * 255)
+            g_off = int((np.sin(t * 1.3)   * 0.5 + 0.5) * 255)
+            b_off = int((np.cos(t * 0.7)   * 0.5 + 0.5) * 255)
+
+            rgba[..., 0] = (xs + r_off) & 0xFF                # R
+            rgba[..., 1] = (ys + g_off) & 0xFF                # G
+            rgba[..., 2] = ((xs ^ ys) + b_off) & 0xFF         # B
+
+            ok = sender.send_image(rgba.tobytes(), WIDTH, HEIGHT, GL_RGBA)
 
             if frame % FPS == 0:
                 status = "OK" if ok else "FAILED"
                 print(
                     f"Frame {frame:6d}  send={status}  "
-                    f"fps={sender.fps:.1f}  "
+                    f"fps={sender.fps:5.1f}  "
+                    f"wall={(time.perf_counter() - t_start):6.2f}s  "
                     f"initialized={sender.is_initialized}"
                 )
 
