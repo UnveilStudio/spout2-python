@@ -18,7 +18,9 @@ set PYTHONIOENCODING=utf-8
 set REPO=%~dp0..
 
 start "spout2-python sender" cmd /K "python ""%~dp0share_image.py"""
-timeout /t 2 /nobreak >nul
+REM 2-second pause without depending on `timeout` (Git-Bash users have a
+REM Unix `timeout` first in PATH that rejects /t).
+ping -n 3 127.0.0.1 >nul
 start "spout2-python preview (cv2)" cmd /K "python ""%~dp0preview_example.py"""
 
 echo.
