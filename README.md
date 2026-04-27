@@ -94,6 +94,17 @@ See `examples/inference_loop.py` for the full receive → inference → send loo
 
 Bindings target **SpoutLibrary.dll v2.007.017** (bundled). Vtable indices are mapped from `SpoutLibrary.h` declaration order. See `spout/_lib.py` for details.
 
+## Support this project
+
+If `spout2-python` saves you time or makes its way into something cool, you can
+throw a beer 🍺 at the maintainer:
+
+- 🟧 **Patreon** — [patreon.com/unveil_studio](https://www.patreon.com/unveil_studio)
+- 💸 **PayPal** — [paypal.me/Unveilstudio](https://paypal.me/Unveilstudio)
+
+Every tip is genuinely appreciated and goes straight into keeping this and
+similar tools alive.
+
 ## License
 
 This project is released under the **MIT License** — see [`LICENSE`](LICENSE).
