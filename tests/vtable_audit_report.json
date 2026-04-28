@@ -1,0 +1,261 @@
+[
+  {
+    "label": "V_IS_INITIALIZED(6)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_UPDATED(20)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_CONNECTED(21)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_FRAME_NEW(22)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_FRAME_COUNT_ENABLED(39)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_REFRESH_RATE(41)",
+    "exit": 0,
+    "stdout": "1.4762816282797e-311",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_FRAME_SYNC_ENABLED(46)",
+    "exit": 0,
+    "stdout": "True",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_VERTICAL_SYNC(47)",
+    "exit": 0,
+    "stdout": "0",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_LOGS_ENABLED(63)",
+    "exit": 0,
+    "stdout": "True",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_LOG_FILE_ENABLED(64)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_LAPTOP(100)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_CURR_MODULE(101)",
+    "exit": 0,
+    "stdout": "0x7fff626b0000",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_SENDER_COUNT(111)",
+    "exit": 0,
+    "stdout": "1",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_BUFFER_MODE(117)",
+    "exit": 0,
+    "stdout": "True",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_BUFFERS(119)",
+    "exit": 0,
+    "stdout": "4",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_MAX_SENDERS(121)",
+    "exit": 0,
+    "stdout": "255",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_DX9(127)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_MEM_SHARE(129)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_CPU_MODE(131)",
+    "exit": 0,
+    "stdout": "False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_SHARE_MODE(133)",
+    "exit": 0,
+    "stdout": "0",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_AUTO_SHARE(135)",
+    "exit": 0,
+    "stdout": "True",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_GLDX_READY(138)",
+    "exit": 0,
+    "stdout": "True",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_NUM_ADAPTERS(139)",
+    "exit": 0,
+    "stdout": "3",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_ADAPTER(142)",
+    "exit": 0,
+    "stdout": "0",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_IS_PREF_AVAIL(149)",
+    "exit": 0,
+    "stdout": "True",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_DX11_FORMAT(159)",
+    "exit": 0,
+    "stdout": "87",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "SLOT_98 chiamato come bool()",
+    "exit": 0,
+    "stdout": "result= False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "SLOT_100 (claim: IsLaptop)",
+    "exit": 0,
+    "stdout": "IsLaptop= False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "SLOT_106 (StartTiming) -> SLOT_107 (EndTiming)",
+    "exit": 0,
+    "stdout": "elapsed_us= 0.02",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "CreateOpenGL -> IsGLDXready -> CloseOpenGL",
+    "exit": 0,
+    "stdout": "CreateOpenGL= True\nIsGLDXready= True\nGetGLDX= False\nGetCPU= False\nGetSharedTextureID= 0\nCloseOpenGL= True",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "OpenDirectX -> OpenDirectX11 -> GetDX11Device/Context -> CloseDirectX11",
+    "exit": 0,
+    "stdout": "OpenDirectX= True\nOpenDirectX11= True\nDX11Device= 0x250d03dc960\nDX11Context= 0x250d03dc960\nCloseDirectX11=ok",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "GetSenderCount + iterazione GetSender",
+    "exit": 0,
+    "stdout": "count= 1\n  [0] ok=True name=b'CPUTest_2'",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "GetActiveSender",
+    "exit": 0,
+    "stdout": "ok= True name= b'CPUTest_2'",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "GetNumAdapters + iterazione GetAdapterName",
+    "exit": 0,
+    "stdout": "num_adapters= 3\n  [0] ok=True name=b'NVIDIA GeForce RTX 4090'\n  [1] ok=True name=b'AMD Radeon(TM) Graphics'\n  [2] ok=True name=b'NVIDIA GeForce RTX 4090'\nAdapterName(current)= b'NVIDIA GeForce RTX 4090'",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "Create/Write/Read/Delete memory buffer",
+    "exit": 0,
+    "stdout": "Create= True\nSize= 1\nWrite= False\nRead= 1 data= b'\\x00'\nDelete= False",
+    "stderr": "",
+    "ok": true
+  },
+  {
+    "label": "V_GET_NAME(7) UNINIT",
+    "exit": 3221226505,
+    "stdout": "",
+    "stderr": "",
+    "ok": false
+  },
+  {
+    "label": "V_GET_SENDER_NAME(23) UNINIT",
+    "exit": 3221225477,
+    "stdout": "",
+    "stderr": "",
+    "ok": false
+  }
+]

@@ -61,7 +61,8 @@ with SpoutReceiver("MySender") as receiver:
 | `examples/tensor_send.py` | Send a PyTorch tensor `(C, H, W)` float [0,1] |
 | `examples/tensor_receive.py` | Receive frames as tensors, zero-copy |
 | `examples/inference_loop.py` | Full Spout → model → Spout round-trip (StreamDiffusion-ready) |
-| `examples/demo.bat` | Double-click to launch sender + preview together |
+| `examples/demo.bat` | Double-click to launch the sender publishing the bundled Unveil logo |
+| `examples/preview_local.py` | **End-to-end Python demo**: sender + cv2 preview window in one script (uses shared memory for the local preview, see note below) |
 
 ```bash
 python examples/send_example.py
@@ -69,12 +70,26 @@ python examples/receive_example.py
 ```
 
 For a one-click sanity check, just double-click **`examples/demo.bat`**.
-That spawns the `share_image.py` sender (which streams `assets/unveil_logo.png`
-as a Spout source called `PythonImage`) and the cv2 preview window. To
-confirm the sender side is working independently of the cv2 receiver,
-open **TouchDesigner** with a "Spout In" TOP set to `PythonImage`, or
-**OBS** with a "Spout2 Capture" source — they will pick up the logo
-within a second.
+That spawns the `share_image.py` sender, which streams `assets/unveil_logo.png`
+as a Spout source called `PythonImage` at 30 fps. To see the frames, open
+**TouchDesigner** with a "Spout In" TOP set to `PythonImage`, or **OBS**
+with a "Spout2 Capture" source — they will pick up the logo within a second.
+
+> **Why doesn't pure-Python Spout loopback work?** SpoutLibrary's GL/DX
+> shared-texture handshake requires either GL/DX-interop hardware support
+> in the calling process (which standalone Python OpenGL contexts don't
+> trigger — `gldx_compatible` stays False) or a working CPU-share fallback
+> path. Empirically (see `tests/test_with_opengl.py` and
+> `docs/ARCHITECTURE.md`) the CPU-share fallback between two SpoutLibrary
+> Python instances drops every frame to zero, even with `CreateOpenGL()`
+> called on both sides and `cpu_share = True`. Use any native Spout
+> receiver (TouchDesigner, OBS, Resolume, vMix, Notch, …) to consume frames.
+>
+> For an **all-in-Python E2E demo** (sender + visual preview in one
+> command) `examples/preview_local.py` works around the limitation by
+> sharing pixels via Python `multiprocessing.shared_memory` *in addition*
+> to publishing the Spout sender. TouchDesigner/OBS still see the real
+> Spout source; the local preview reads the shared memory.
 
 ## Tensor / inference usage
 

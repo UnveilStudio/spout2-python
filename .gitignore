@@ -14,9 +14,10 @@ Spout2-SDK/
 venv/
 env/
 
-# IDE
+# IDE / agent config
 .vscode/
 .idea/
+.claude/
 
 # Test images
 *.png
