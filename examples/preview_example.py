@@ -17,7 +17,7 @@ Usage:
 
 Requirements:
     pip install opencv-python numpy
-    pip install git+https://github.com/UnveilStudio/spout2-python.git
+    pip install git+https://github.com/UnveilStudio/SPOUT2ForPython.git
 """
 import os
 import sys
@@ -30,7 +30,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from spout import SpoutReceiver, SpoutUtils, GL_RGBA
 
-WINDOW = "spout2-python preview"
+WINDOW = "SPOUT2ForPython preview"
 
 
 def wait_for_sender(utils: SpoutUtils, requested: str, timeout_s: float = 30.0) -> str:

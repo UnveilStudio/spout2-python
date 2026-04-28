@@ -1,5 +1,5 @@
 @echo off
-REM demo.bat - one-click Spout sender-only demo for spout2-python.
+REM demo.bat - one-click Spout sender-only demo for SPOUT2ForPython.
 REM   Launches share_image.py which publishes assets\unveil_logo.png as a
 REM   Spout source called "PythonImage" so any Spout-aware app on this
 REM   machine can pick it up:
@@ -16,11 +16,11 @@ setlocal
 chcp 65001 >nul
 set PYTHONIOENCODING=utf-8
 
-start "spout2-python sender (PythonImage)" cmd /K "python ""%~dp0share_image.py"""
+start "SPOUT2ForPython sender (PythonImage)" cmd /K "python ""%~dp0share_image.py"""
 
 echo.
 echo ============================================================
-echo   spout2-python demo - sender started
+echo   SPOUT2ForPython demo - sender started
 echo ============================================================
 echo.
 echo The sender is publishing assets\unveil_logo.png as Spout

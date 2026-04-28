@@ -16,7 +16,7 @@ python examples/receive_example.py          # Connects to active sender and poll
 python examples/share_image.py path/to/image  # Shares a static image (requires Pillow)
 ```
 
-The project is installable via `pip install .` (or `pip install git+https://github.com/UnveilStudio/spout2-python.git`). `SpoutLibrary.dll` is bundled as `package-data` and shipped inside the installed `spout` package.
+The project is installable via `pip install .` (or `pip install git+https://github.com/UnveilStudio/SPOUT2ForPython.git`). `SpoutLibrary.dll` is bundled as `package-data` and shipped inside the installed `spout` package.
 
 ## Architecture
 

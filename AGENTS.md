@@ -1,12 +1,12 @@
 # AGENTS.md — Guida rapida per agenti AI
 
 Questo file aiuta un agente (Claude Code, Cursor, Copilot, ecc.) a usare
-`spout2-python` correttamente al primo colpo, senza dover leggere tutto il
+`SPOUT2ForPython` correttamente al primo colpo, senza dover leggere tutto il
 codice sorgente.
 
 ## TL;DR
 
-- `spout2-python` espone tre classi: `SpoutSender`, `SpoutReceiver`, `SpoutUtils`.
+- `SPOUT2ForPython` espone tre classi: `SpoutSender`, `SpoutReceiver`, `SpoutUtils`.
 - È un wrapper `ctypes` su `SpoutLibrary.dll` (Spout2 v2.007.017).
 - **Solo Windows x64.** Su altri OS l'import fallisce subito con `OSError`.
 - I pixel viaggiano come buffer `bytes` / `bytearray` / `ctypes` array, in
@@ -17,10 +17,10 @@ codice sorgente.
 ## Installazione
 
 ```bash
-pip install git+https://github.com/UnveilStudio/spout2-python.git
+pip install git+https://github.com/UnveilStudio/SPOUT2ForPython.git
 # opzionali:
-pip install "git+https://github.com/UnveilStudio/spout2-python.git#egg=spout2-python[torch]"
-pip install "git+https://github.com/UnveilStudio/spout2-python.git#egg=spout2-python[image]"
+pip install "git+https://github.com/UnveilStudio/SPOUT2ForPython.git#egg=SPOUT2ForPython[torch]"
+pip install "git+https://github.com/UnveilStudio/SPOUT2ForPython.git#egg=SPOUT2ForPython[image]"
 ```
 
 Niente da configurare: `SpoutLibrary.dll` è bundled e caricata automaticamente

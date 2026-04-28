@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="spout2-python — GPU texture sharing for Python" width="100%" />
+  <img src="assets/banner.png" alt="SPOUT2ForPython — GPU texture sharing for Python" width="100%" />
 </p>
 
 <p align="center">
@@ -10,7 +10,7 @@
   <a href="AGENTS.md"><img alt="Agent-friendly" src="https://img.shields.io/badge/agent--friendly-yes-7c3aed"></a>
 </p>
 
-# spout2-python
+# SPOUT2ForPython
 
 Python bindings for [Spout2](https://spout.zeal.co/) — real-time GPU texture sharing on Windows.
 Lets Python send and receive video frames to/from any Spout-aware application (TouchDesigner, OBS, Resolume, game engines, etc.).
@@ -78,7 +78,7 @@ pip install ".[torch]"
 Or directly from GitHub (no git clone needed):
 
 ```bash
-pip install git+https://github.com/UnveilStudio/spout2-python.git
+pip install git+https://github.com/UnveilStudio/SPOUT2ForPython.git
 ```
 
 ## Quick start
@@ -173,7 +173,7 @@ Bindings target **SpoutLibrary.dll v2.007.017** (bundled). Vtable indices are ma
 
 ## Support this project
 
-If `spout2-python` saves you time or makes its way into something cool, you can
+If `SPOUT2ForPython` saves you time or makes its way into something cool, you can
 throw a beer 🍺 at the maintainer:
 
 - 🟧 **Patreon** — [patreon.com/unveil_studio](https://www.patreon.com/unveil_studio)

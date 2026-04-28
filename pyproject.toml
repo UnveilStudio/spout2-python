@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "spout2-python"
+name = "SPOUT2ForPython"
 version = "0.1.0"
 description = "Python bindings for Spout2 GPU texture sharing (Windows only)"
 readme = "README.md"
@@ -23,7 +23,7 @@ torch = ["numpy", "torch"]
 image = ["Pillow"]
 
 [project.urls]
-Repository = "https://github.com/UnveilStudio/spout2-python"
+Repository = "https://github.com/UnveilStudio/SPOUT2ForPython"
 
 [tool.setuptools]
 include-package-data = true

@@ -1,4 +1,4 @@
-# spout2-python — Mappa mentale dell'architettura
+# SPOUT2ForPython — Mappa mentale dell'architettura
 
 > **Versione documento:** 2026-04-28  
 > **Spout SDK target:** v2.007.017 (`spout/SpoutLibrary.dll`)  

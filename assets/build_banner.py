@@ -19,7 +19,7 @@ OUT  = ROOT / "assets" / "banner.png"
 
 W, H = 1280, 320
 
-TITLE   = "spout2-python"
+TITLE   = "SPOUT2ForPython"
 TAGLINE = "GPU texture sharing for Python  ·  Windows x64"
 FOOTER  = "Unveil Studio  ·  MIT License"
 
