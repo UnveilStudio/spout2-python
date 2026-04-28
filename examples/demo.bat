@@ -1,14 +1,14 @@
 @echo off
-REM demo.bat - one-click Spout demo for spout2-python.
-REM   Launches share_image.py which publishes assets\unveil_logo.png on the
-REM   LAN as a Spout source called "PythonImage".
+REM demo.bat - one-click Spout sender-only demo for spout2-python.
+REM   Launches share_image.py which publishes assets\unveil_logo.png as a
+REM   Spout source called "PythonImage" so any Spout-aware app on this
+REM   machine can pick it up:
+REM     - TouchDesigner: drop a "Spout In" TOP and pick "PythonImage"
+REM     - OBS Studio:    add a "Spout2 Capture" source and pick "PythonImage"
+REM     - Resolume / vMix / Notch: any Spout2 input pointed at "PythonImage"
 REM
-REM IMPORTANT: pure-Python <-> pure-Python Spout loopback does NOT work
-REM (Windows GL/DX interop is not exposed to ctypes / standalone GL contexts).
-REM To VERIFY the sender is publishing, open one of these on the same machine:
-REM   - TouchDesigner: drop a "Spout In" TOP and pick "PythonImage"
-REM   - OBS Studio:    add a "Spout2 Capture" source and pick "PythonImage"
-REM   - Resolume / vMix / Notch: any Spout2 input pointed at "PythonImage"
+REM For an ALL-PYTHON demo (sender + cv2 preview window in one shot) use
+REM examples\preview_local.bat instead.
 REM
 REM Press Ctrl+C in the sender window to stop.
 
@@ -31,9 +31,8 @@ echo   - TouchDesigner: Spout In TOP -^> select "PythonImage"
 echo   - OBS Studio:    Source "Spout2 Capture" -^> "PythonImage"
 echo   - Resolume / vMix / Notch / ...
 echo.
-echo Why no Python preview window? Pure-Python receivers cannot
-echo open the GL/DX shared texture (a known SpoutLibrary limitation).
-echo See README "Known limitations" for details.
+echo TIP: for an all-in-Python demo (sender + cv2 preview in one shot)
+echo run examples\preview_local.bat instead.
 echo ============================================================
 echo.
 pause
