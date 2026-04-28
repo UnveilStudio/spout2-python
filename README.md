@@ -1,5 +1,12 @@
 <p align="center">
-  <img src="assets/unveil_logo.png" alt="Unveil Studio" width="160" />
+  <img src="assets/banner.png" alt="spout2-python — GPU texture sharing for Python" width="100%" />
+</p>
+
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white">
+  <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%20x64-0078D6?logo=windows">
+  <img alt="Spout SDK" src="https://img.shields.io/badge/Spout%20SDK-2.007.017-aa6eff">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
 </p>
 
 # spout2-python
@@ -8,6 +15,32 @@ Python bindings for [Spout2](https://spout.zeal.co/) — real-time GPU texture s
 Lets Python send and receive video frames to/from any Spout-aware application (TouchDesigner, OBS, Resolume, game engines, etc.).
 
 **Windows x64 only.** Requires DirectX 11.
+
+## How it works
+
+```mermaid
+flowchart LR
+    APP[Your Python code] --> SDR[spout.SpoutSender]
+    APP --> RCV[spout.SpoutReceiver]
+    SDR --> LIB[spout._lib<br/>ctypes vtable dispatch]
+    RCV --> LIB
+    LIB --> DLL[SpoutLibrary.dll<br/>v2.007.017]
+    DLL --> DX[DirectX 11<br/>shared NT handle]
+    DX --> GPU[(GPU shared texture)]
+    GPU -.-> EXT[TouchDesigner / OBS<br/>Resolume / vMix / Notch]
+    GPU -.-> EXT2[any Spout-aware<br/>native app]
+
+    classDef py fill:#1e1e2e,stroke:#aa6eff,stroke-width:2px,color:#fff
+    classDef sys fill:#0d1117,stroke:#444,color:#fff
+    classDef gpu fill:#3a1a5c,stroke:#aa6eff,stroke-width:2px,color:#fff
+    class APP,SDR,RCV,LIB py
+    class DLL,DX sys
+    class GPU gpu
+    class EXT,EXT2 sys
+```
+
+The whole stack is Python + ctypes against a single DLL — no compilation,
+no SDK download. Ship is `pip install` only.
 
 > **Built on top of [Spout2](https://github.com/leadedge/Spout2) by Lynn Jarvis.**
 > All the heavy lifting — the DirectX/OpenGL interop, the shared-texture
