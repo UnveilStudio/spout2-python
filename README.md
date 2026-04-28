@@ -7,6 +7,7 @@
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%20x64-0078D6?logo=windows">
   <img alt="Spout SDK" src="https://img.shields.io/badge/Spout%20SDK-2.007.017-aa6eff">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
+  <a href="AGENTS.md"><img alt="Agent-friendly" src="https://img.shields.io/badge/agent--friendly-yes-7c3aed"></a>
 </p>
 
 # spout2-python
@@ -41,6 +42,20 @@ flowchart LR
 
 The whole stack is Python + ctypes against a single DLL — no compilation,
 no SDK download. Ship is `pip install` only.
+
+## Agent-friendly
+
+This repo is designed to be picked up by AI coding agents (Claude Code,
+Cursor, Copilot, …) on the first try without spelunking the source:
+
+- [`AGENTS.md`](AGENTS.md) — TL;DR + sender/receiver patterns, common
+  pitfalls, install instructions tailored for agents.
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — empirically-verified
+  vtable layout, sharing modes, ABI gotchas, all cross-checked against
+  `tests/`.
+- [`tests/`](tests/) — runnable audits (vtable probe, slot-98 quirk
+  diagnostic, cross-process loopback, GL/CPU-share matrix) so an agent
+  can verify behavior on the target machine before generating code.
 
 > **Built on top of [Spout2](https://github.com/leadedge/Spout2) by Lynn Jarvis.**
 > All the heavy lifting — the DirectX/OpenGL interop, the shared-texture
