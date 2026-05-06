@@ -70,6 +70,9 @@ def _create_handle() -> int:
     return h
 
 
+_PROTOTYPE_CACHE: dict = {}
+
+
 def _vtbl_fn(handle: int, index: int, restype, argtypes):
     """
     Return a callable for the virtual method at *index* in the object's vtable.
@@ -83,7 +86,13 @@ def _vtbl_fn(handle: int, index: int, restype, argtypes):
     # vtable layout:     [fn_ptr_0, fn_ptr_1, ...]
     vtbl_ptr = ctypes.cast(handle, ctypes.POINTER(ctypes.c_void_p))[0]
     fn_ptr   = ctypes.cast(vtbl_ptr, ctypes.POINTER(ctypes.c_void_p))[index]
-    FnType   = ctypes.CFUNCTYPE(restype, ctypes.c_void_p, *argtypes)
+    # Cache CFUNCTYPE prototypes — building one is non-trivial and this
+    # helper is called inside per-frame hot paths (send_image, is_frame_new).
+    key = (restype, tuple(argtypes))
+    FnType = _PROTOTYPE_CACHE.get(key)
+    if FnType is None:
+        FnType = ctypes.CFUNCTYPE(restype, ctypes.c_void_p, *argtypes)
+        _PROTOTYPE_CACHE[key] = FnType
     return FnType(fn_ptr)
 
 

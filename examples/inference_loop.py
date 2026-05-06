@@ -62,8 +62,6 @@ def model_output_to_send_buf(output: torch.Tensor):
     h, w = hwc.shape[:2]
 
     rgba = np.empty((h, w, 4), dtype=np.uint8)
-    np.multiply(hwc, 255, out=rgba[..., :3].astype(np.float32)).astype(np.uint8)
-    # simpler equivalent:
     rgba[..., :3] = (hwc * 255).astype(np.uint8)
     rgba[...,  3] = 255
 

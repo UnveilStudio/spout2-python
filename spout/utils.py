@@ -6,38 +6,36 @@ All utilities share a single SPOUTLIBRARY instance obtained via GetSpout().
 """
 import ctypes
 from . import _lib
+from ._base import _SpoutBase, SPOUT_NAME_MAX
 
 
-class SpoutUtils:
+class SpoutUtils(_SpoutBase):
     """
     Miscellaneous Spout utilities: sender enumeration, frame sync, and
     shared-memory data buffers.
     """
 
-    def __init__(self):
-        self._h = _lib._create_handle()
-
     # ------------------------------------------------------------------ #
-    # Context manager
+    # Internal string-out helpers
     # ------------------------------------------------------------------ #
 
-    def __enter__(self):
-        return self
+    def _indexed_name(self, vtable_idx: int, item_idx: int) -> str:
+        """Vtable dispatch for ``(int, char*, int)`` → ``bool`` string-out methods."""
+        buf = ctypes.create_string_buffer(SPOUT_NAME_MAX)
+        fn = self._fn(
+            vtable_idx,
+            ctypes.c_bool,
+            [ctypes.c_int, ctypes.c_char_p, ctypes.c_int],
+        )
+        ok = fn(self._h, item_idx, buf, SPOUT_NAME_MAX)
+        return buf.value.decode() if ok else ""
 
-    def __exit__(self, *_):
-        self.release()
-
-    def __del__(self):
-        self.release()
-
-    def _fn(self, index, restype, argtypes):
-        return _lib._vtbl_fn(self._h, index, restype, argtypes)
-
-    def release(self):
-        if self._h:
-            fn = self._fn(_lib.V_RELEASE, None, [])
-            fn(self._h)
-            self._h = None
+    def _name_out(self, vtable_idx: int) -> str:
+        """Vtable dispatch for ``(char*)`` → ``bool`` string-out methods."""
+        buf = ctypes.create_string_buffer(SPOUT_NAME_MAX)
+        fn = self._fn(vtable_idx, ctypes.c_bool, [ctypes.c_char_p])
+        ok = fn(self._h, buf)
+        return buf.value.decode() if ok else ""
 
     # ------------------------------------------------------------------ #
     # Sender enumeration
@@ -45,26 +43,11 @@ class SpoutUtils:
 
     def get_sender_count(self) -> int:
         """Return the number of active Spout senders on this system."""
-        fn = self._fn(_lib.V_GET_SENDER_COUNT, ctypes.c_int, [])
-        return fn(self._h)
+        return self._call(_lib.V_GET_SENDER_COUNT, ctypes.c_int)
 
     def get_sender(self, index: int) -> str:
-        """
-        Return the name of the sender at *index* in the sender list.
-
-        Parameters
-        ----------
-        index : int
-            0-based index, must be < ``get_sender_count()``.
-        """
-        buf = ctypes.create_string_buffer(256)
-        fn = self._fn(
-            _lib.V_GET_SENDER,
-            ctypes.c_bool,
-            [ctypes.c_int, ctypes.c_char_p, ctypes.c_int],
-        )
-        ok = fn(self._h, index, buf, 256)
-        return buf.value.decode() if ok else ""
+        """Return the name of the sender at *index* in the sender list."""
+        return self._indexed_name(_lib.V_GET_SENDER, index)
 
     def get_all_senders(self) -> list:
         """Return a list of all active sender names."""
@@ -77,10 +60,7 @@ class SpoutUtils:
 
     def get_active_sender(self) -> str:
         """Return the name of the currently active sender."""
-        buf = ctypes.create_string_buffer(256)
-        fn = self._fn(_lib.V_GET_ACTIVE_SENDER, ctypes.c_bool, [ctypes.c_char_p])
-        ok = fn(self._h, buf)
-        return buf.value.decode() if ok else ""
+        return self._name_out(_lib.V_GET_ACTIVE_SENDER)
 
     def get_sender_info(self, name: str):
         """
@@ -147,18 +127,11 @@ class SpoutUtils:
         return bool(fn(self._h, sender_name.encode(), timeout_ms))
 
     def is_frame_sync_enabled(self) -> bool:
-        fn = self._fn(_lib.V_IS_FRAME_SYNC_ENABLED, ctypes.c_bool, [])
-        return bool(fn(self._h))
-
-    def hold_fps(self, fps: int):
-        """Sleep to maintain the target frame rate *fps*."""
-        fn = self._fn(_lib.V_HOLD_FPS, None, [ctypes.c_int])
-        fn(self._h, fps)
+        return self._call(_lib.V_IS_FRAME_SYNC_ENABLED, ctypes.c_bool, bool)
 
     def get_refresh_rate(self) -> float:
         """Return the system monitor refresh rate (Hz)."""
-        fn = self._fn(_lib.V_GET_REFRESH_RATE, ctypes.c_double, [])
-        return fn(self._h)
+        return self._call(_lib.V_GET_REFRESH_RATE, ctypes.c_double)
 
     # ------------------------------------------------------------------ #
     # Shared memory data buffers
@@ -179,12 +152,16 @@ class SpoutUtils:
 
     def write_memory_buffer(self, name: str, data: bytes) -> bool:
         """Write *data* into a previously created shared-memory buffer."""
+        # c_void_p (not c_char_p) — c_char_p truncates at the first NUL byte,
+        # which silently corrupts arbitrary binary payloads.
         fn = self._fn(
             _lib.V_WRITE_MEM_BUFFER,
             ctypes.c_bool,
-            [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_int],
+            [ctypes.c_char_p, ctypes.c_void_p, ctypes.c_int],
         )
-        return bool(fn(self._h, name.encode(), data, len(data)))
+        buf = (ctypes.c_ubyte * len(data)).from_buffer_copy(data)
+        return bool(fn(self._h, name.encode(),
+                       ctypes.cast(buf, ctypes.c_void_p), len(data)))
 
     def read_memory_buffer(self, name: str, max_length: int = 4096) -> bytes:
         """
@@ -203,8 +180,7 @@ class SpoutUtils:
 
     def delete_memory_buffer(self) -> bool:
         """Delete the shared-memory buffer created by this instance."""
-        fn = self._fn(_lib.V_DELETE_MEM_BUFFER, ctypes.c_bool, [])
-        return bool(fn(self._h))
+        return self._call(_lib.V_DELETE_MEM_BUFFER, ctypes.c_bool, bool)
 
     def get_memory_buffer_size(self, name: str) -> int:
         """Return the size (bytes) of the named shared-memory buffer."""
@@ -247,19 +223,11 @@ class SpoutUtils:
 
     def get_num_adapters(self) -> int:
         """Return the number of GPU adapters on this system."""
-        fn = self._fn(_lib.V_GET_NUM_ADAPTERS, ctypes.c_int, [])
-        return fn(self._h)
+        return self._call(_lib.V_GET_NUM_ADAPTERS, ctypes.c_int)
 
     def get_adapter_name(self, index: int) -> str:
         """Return the name of the GPU adapter at *index*."""
-        buf = ctypes.create_string_buffer(256)
-        fn = self._fn(
-            _lib.V_GET_ADAPTER_NAME,
-            ctypes.c_bool,
-            [ctypes.c_int, ctypes.c_char_p, ctypes.c_int],
-        )
-        ok = fn(self._h, index, buf, 256)
-        return buf.value.decode() if ok else ""
+        return self._indexed_name(_lib.V_GET_ADAPTER_NAME, index)
 
     def get_all_adapter_names(self) -> list:
         """Return names of all GPU adapters."""
@@ -267,10 +235,8 @@ class SpoutUtils:
 
     def is_gldx_ready(self) -> bool:
         """True if OpenGL/DirectX interop is supported on this machine."""
-        fn = self._fn(_lib.V_IS_GLDX_READY, ctypes.c_bool, [])
-        return bool(fn(self._h))
+        return self._call(_lib.V_IS_GLDX_READY, ctypes.c_bool, bool)
 
     def is_laptop(self) -> bool:
         """True if running on a laptop."""
-        fn = self._fn(_lib.V_IS_LAPTOP, ctypes.c_bool, [])
-        return bool(fn(self._h))
+        return self._call(_lib.V_IS_LAPTOP, ctypes.c_bool, bool)

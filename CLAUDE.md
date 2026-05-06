@@ -38,7 +38,7 @@ SpoutLibrary.dll (v2.007.017)                          ← C++ GPU texture shari
 - `_vtbl_fn(handle, index, restype, argtypes)` dereferences `handle→vtable[index]` and returns a bound callable
 - All `V_*` constants in `_lib.py` are vtable slot indices matching the order in `SpoutLibrary.h`
 
-**Important:** The compiled DLL (v2.007.017) contains one undocumented extra method at vtable index 98 that is absent from the public header. This was discovered empirically — `V_IS_LAPTOP` at index 100 returned the correct result, confirming the offset. Do not reorder `V_*` constants without verifying against the DLL headers in `Spout2-SDK/`.
+**Important:** The compiled DLL (v2.007.017) contains one undocumented extra method at vtable index 98 that is absent from the public header. This was discovered empirically — `V_IS_LAPTOP` at index 100 returned the correct result, confirming the offset. Do not reorder `V_*` constants without verifying against the bundled header at `Spout-SDK-binaries/Libs_2-007-017/include/SpoutLibrary/SpoutLibrary.h`.
 
 The actual integrated/dedicated GPU switching API is at indices 145–150 (`V_GET_PERF_PREF` … `V_IS_APP_PATH`). These wrap the Windows Graphics Performance Preference registry setting and require Windows 10 April 2018 Update (NTDDI_WIN10_RS4) or later.
 
@@ -50,7 +50,7 @@ The actual integrated/dedicated GPU switching API is at indices 145–150 (`V_GE
 | `SpoutReceiver` | `receiver.py` | Subscribe to a sender and poll for new frames |
 | `SpoutUtils` | `utils.py` | Enumerate senders, frame sync, shared memory IPC, GPU adapter info |
 
-All three classes call `_create_handle()` on init and call `ReleaseLibrary` (vtable teardown) on `__del__` or context manager exit. `SpoutSender` supports `with` statements.
+All three classes call `_create_handle()` on init and call `ReleaseLibrary` (vtable teardown) on `__del__` or context manager exit. All three support `with` statements.
 
 ### Pixel Buffer Convention
 

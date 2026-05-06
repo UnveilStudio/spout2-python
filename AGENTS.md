@@ -92,5 +92,5 @@ per ottenere zero-copy in entrambe le direzioni.
 ## Riferimenti
 
 - Spout2 upstream: https://github.com/leadedge/Spout2
-- Header originale (per indici vtable): `Spout2-SDK/SPOUTSDK/SpoutLibrary/SpoutLibrary.h`
+- Header originale (per indici vtable): `Spout-SDK-binaries/Libs_2-007-017/include/SpoutLibrary/SpoutLibrary.h`
 - Note dettagliate sul vtable dispatch: `CLAUDE.md`
